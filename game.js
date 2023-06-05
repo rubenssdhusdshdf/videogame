@@ -12,6 +12,10 @@ const playerPosition = {
   x: undefined,
   y: undefined,
 };
+const giftPosition = {
+  x: undefined,
+  y: undefined,
+};
 
 window.addEventListener("load", setCanvasSize);
 window.addEventListener("resize", setCanvasSize);
@@ -37,7 +41,7 @@ function startGame() {
   game.font = elementsSize + "px Verdana";
   game.textAlign = "end";
 
-  const map = maps[0];
+  const map = maps[2];
   const mapRows = map.trim().split("\n");
   const mapRowCols = mapRows.map((row) => row.trim().split(""));
   console.log({ map, mapRows, mapRowCols });
@@ -55,6 +59,9 @@ function startGame() {
           playerPosition.y = posY;
           console.log({ playerPosition });
         }
+      } else if (col == "I") {
+        giftPosition.x = posX;
+        giftPosition.y = posY;
       }
 
       game.fillText(emoji, posX, posY);
@@ -65,6 +72,16 @@ function startGame() {
 }
 
 function movePlayer() {
+  const giftCollisionX =
+    playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
+  const giftCollisionY =
+    playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3);
+  const giftCollision = giftCollisionX && giftCollisionY;
+
+  if (giftCollision) {
+    console.log("Subiste de nivel!");
+  }
+
   game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
 }
 
@@ -80,7 +97,6 @@ function moveByKeys(event) {
   else if (event.key == "ArrowRight") moveRight();
   else if (event.key == "ArrowDown") moveDown();
 }
-
 function moveUp() {
   console.log("Me quiero mover hacia arriba");
 
