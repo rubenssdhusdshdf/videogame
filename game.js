@@ -8,6 +8,11 @@ const btnDown = document.querySelector("#down");
 let canvasSize;
 let elementsSize;
 
+const playerPosition = {
+  x: undefined,
+  y: undefined,
+};
+
 window.addEventListener("load", setCanvasSize);
 window.addEventListener("resize", setCanvasSize);
 
@@ -42,15 +47,22 @@ function startGame() {
       const emoji = emojis[col];
       const posX = elementsSize * (colI + 1);
       const posY = elementsSize * (rowI + 1);
+
+      if (col == "O") {
+        playerPosition.x = posX;
+        playerPosition.y = posY;
+        console.log({ playerPosition });
+      }
+
       game.fillText(emoji, posX, posY);
     });
   });
 
-  // for (let row = 1; row <= 10; row++) {
-  //   for (let col = 1; col <= 10; col++) {
-  //     game.fillText(emojis[mapRowCols[row - 1][col - 1]], elementsSize * col, elementsSize * row);
-  //   }
-  // }
+  movePlayer();
+}
+
+function movePlayer() {
+  game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
 }
 
 window.addEventListener("keydown", moveByKeys);
@@ -60,25 +72,22 @@ btnRight.addEventListener("click", moveRight);
 btnDown.addEventListener("click", moveDown);
 
 function moveByKeys(event) {
-  if (event.key == "ArrowUp")
-    moveUp(); // I delete the opening curly brake for reason
+  if (event.key == "ArrowUp") moveUp();
   else if (event.key == "ArrowLeft") moveLeft();
-  else if (event.key == "ArrowDown") moveDown();
   else if (event.key == "ArrowRight") moveRight();
+  else if (event.key == "ArrowDown") moveDown();
 }
-
 function moveUp() {
-  console.log("I want to move up");
+  console.log("Me quiero mover hacia arriba");
+  playerPosition.y -= elementsSize;
+  movePlayer();
 }
-
 function moveLeft() {
-  console.log("I want to move Left");
+  console.log("Me quiero mover hacia izquierda");
 }
-
 function moveRight() {
-  console.log("I want to move right");
+  console.log("Me quiero mover hacia derecha");
 }
-
 function moveDown() {
-  console.log("I want to move down");
+  console.log("Me quiero mover hacia abajo");
 }
